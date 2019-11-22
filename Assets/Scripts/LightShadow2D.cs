@@ -58,7 +58,7 @@ public class LightShadow2D : MonoBehaviour
             triangles[i + 1] = vi;
             triangles[i + 2] = vi + 1;
         }
-        if (segments != 0)
+        if (segments != 0&&angle==360)
         {
             triangles[segments * 3 - 3] = 0;
             triangles[segments * 3 - 2] = segments;
