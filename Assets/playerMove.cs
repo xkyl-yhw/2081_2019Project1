@@ -16,9 +16,10 @@ public class playerMove : MonoBehaviour
     void Update()
     {
         float horizontal = Input.GetAxis("Horizontal");
-        float Vertical = Input.GetAxis("Vertical");
-        Vector2 temp = new Vector2(horizontal, -Vertical);
-        temp.Normalize();
-        transform.Translate(temp * speed * Time.deltaTime);
+         float Vertical = Input.GetAxis("Vertical");
+         Vector2 temp = new Vector2(horizontal, -Vertical);
+        /* temp.Normalize();
+        transform.Translate(temp * speed * Time.deltaTime);*/
+        transform.Rotate(Vector3.forward * horizontal * 20 * Time.deltaTime);//左右旋转
     }
 }
