@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter),typeof(MeshRenderer))]
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class LightShadow2D : MonoBehaviour
 {
     public float range = 4f;
@@ -12,6 +12,7 @@ public class LightShadow2D : MonoBehaviour
     public int segments = 50;
     public LayerMask cullingMask = -1;
     public Color color=Color.white;
+
 
     private MeshRenderer meshRenderer;
     private MeshFilter meshFilter;
@@ -42,7 +43,7 @@ public class LightShadow2D : MonoBehaviour
         float interAngle = tempAngle / segments;
         for (int i=0;i<segments;i++)
         {
-            Vector2 dir = new Vector2(Mathf.Cos(currentAngle), Mathf.Sin(currentAngle));
+            Vector2 dir = new Vector2(Mathf.Cos(currentAngle+countAngle(transform.right,Vector2.right)), Mathf.Sin(currentAngle + countAngle(transform.right, Vector2.right)));
             RaycastHit2D hit = Physics2D.Raycast(transform.localPosition, dir, range, cullingMask);
             float realDis = hit.collider == null ? range : hit.distance;
             Vector2 endPoint = new Vector2(transform.localPosition.x + realDis * dir.x / dir.magnitude, transform.localPosition.y + realDis * dir.y / dir.magnitude);
@@ -76,6 +77,14 @@ public class LightShadow2D : MonoBehaviour
     private void OnDisable()
     {
         meshFilter.sharedMesh = null;
+    }
+
+    private float countAngle(Vector3 a,Vector3 b)
+    {
+        Vector3 c = Vector3.Cross(a, b);
+        float angle = Vector3.Angle(a, b);
+        float sign = (c.z>=0)? 1:-1;
+        return angle*sign*Mathf.Deg2Rad;
     }
 
 
