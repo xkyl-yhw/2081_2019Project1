@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter),typeof(MeshRenderer))]
-//[ExecuteInEditMode]
+[ExecuteInEditMode]
 public class LightShadow2D : MonoBehaviour
 {
     public float range = 4f;
@@ -27,14 +27,15 @@ public class LightShadow2D : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         meshFilter = GetComponent<MeshFilter>();
         material = new Material(Shader.Find("Sprites/Default"));
-        material.SetColor("_color", color);
+        material.SetColor("_Color", color);
         meshRenderer.sharedMaterial = material;
     }
 
     private void Update()
     {
+        bool trigger = false;
         range = Mathf.Clamp(range, 0, range);
-        material.SetColor("_color", color);
+        material.SetColor("_Color", color);
         vertices = new Vector3[segments + 1];
         vertices[0] = transform.InverseTransformPoint(transform.localPosition);
 
@@ -45,13 +46,20 @@ public class LightShadow2D : MonoBehaviour
         {
             Vector2 dir = new Vector2(Mathf.Cos(currentAngle+countAngle(transform.right,Vector2.right)), Mathf.Sin(currentAngle + countAngle(transform.right, Vector2.right)));
             RaycastHit2D hit = Physics2D.Raycast(transform.localPosition, dir, range, cullingMask);
+            if(hit.collider!=null)
+            if (hit.collider.gameObject.tag=="Anim")
+            {
+                SendToFear(hit.collider.gameObject);
+                trigger = true;
+            }
             float realDis = hit.collider == null ? range : hit.distance;
             Vector2 endPoint = new Vector2(transform.localPosition.x + realDis * dir.x / dir.magnitude, transform.localPosition.y + realDis * dir.y / dir.magnitude);
             endPoint = transform.InverseTransformPoint(endPoint);
             vertices[i + 1] = endPoint;
             currentAngle -= interAngle;
         }
-
+        if (!trigger)
+            clearFear();
         triangles = new int[segments * 3];
         for (int i = 0,vi=1; i < segments*3-3; i+=3,vi++)
         {
@@ -85,6 +93,19 @@ public class LightShadow2D : MonoBehaviour
         float angle = Vector3.Angle(a, b);
         float sign = (c.z>=0)? 1:-1;
         return angle*sign*Mathf.Deg2Rad;
+    }
+
+    public void SendToFear(GameObject target)
+    {
+        target.GetComponent<SpeciesFearLight>().ReceiveMessage();
+    }
+
+    public void clearFear()
+    {
+        foreach(GameObject item in GameObject.FindGameObjectsWithTag("Anim"))
+        {
+            item.GetComponent<SpeciesFearLight>().StopMoving();
+        }
     }
 
 
