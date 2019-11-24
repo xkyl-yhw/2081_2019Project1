@@ -33,7 +33,8 @@ public class LightShadow2D : MonoBehaviour
 
     private void Update()
     {
-        bool trigger = false;
+        bool trigger1 = false;
+        bool trigger2 = false;
         range = Mathf.Clamp(range, 0, range);
         material.SetColor("_Color", color);
         vertices = new Vector3[segments + 1];
@@ -46,11 +47,18 @@ public class LightShadow2D : MonoBehaviour
         {
             Vector2 dir = new Vector2(Mathf.Cos(currentAngle+countAngle(transform.right,Vector2.right)), Mathf.Sin(currentAngle + countAngle(transform.right, Vector2.right)));
             RaycastHit2D hit = Physics2D.Raycast(transform.localPosition, dir, range, cullingMask);
-            if(hit.collider!=null)
-            if (hit.collider.gameObject.tag=="Anim")
+            if (hit.collider != null)
             {
-                SendToFear(hit.collider.gameObject);
-                trigger = true;
+                if (hit.collider.gameObject.tag == "Anim")
+                {
+                    SendToFear(hit.collider.gameObject);
+                    trigger1 = true;
+                }
+                if (hit.collider.gameObject.tag == "LightTrigger")
+                {
+                    SendToTrigger(hit.collider.gameObject);
+                    trigger2 = true;
+                }
             }
             float realDis = hit.collider == null ? range : hit.distance;
             Vector2 endPoint = new Vector2(transform.localPosition.x + realDis * dir.x / dir.magnitude, transform.localPosition.y + realDis * dir.y / dir.magnitude);
@@ -58,8 +66,10 @@ public class LightShadow2D : MonoBehaviour
             vertices[i + 1] = endPoint;
             currentAngle -= interAngle;
         }
-        if (!trigger)
+        if (!trigger1)
             clearFear();
+        if (!trigger2)
+            clearTrigger();
         triangles = new int[segments * 3];
         for (int i = 0,vi=1; i < segments*3-3; i+=3,vi++)
         {
@@ -100,11 +110,24 @@ public class LightShadow2D : MonoBehaviour
         target.GetComponent<SpeciesFearLight>().ReceiveMessage();
     }
 
+    public void SendToTrigger(GameObject target)
+    {
+        target.GetComponent<LightTrigger>().ReceiveMessage();
+    }
+
     public void clearFear()
     {
         foreach(GameObject item in GameObject.FindGameObjectsWithTag("Anim"))
         {
             item.GetComponent<SpeciesFearLight>().StopMoving();
+        }
+    }
+
+    public void clearTrigger()
+    {
+        foreach(GameObject item in GameObject.FindGameObjectsWithTag("LightTrigger"))
+        {
+            item.GetComponent<LightTrigger>().stopMoving();
         }
     }
 
