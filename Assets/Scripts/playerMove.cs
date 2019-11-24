@@ -20,6 +20,6 @@ public class playerMove : MonoBehaviour
          Vector2 temp = new Vector2(horizontal, -Vertical);
         /* temp.Normalize();
         transform.Translate(temp * speed * Time.deltaTime);*/
-        transform.Rotate(Vector3.forward * horizontal * 20 * Time.deltaTime);//左右旋转
+        transform.Rotate(Vector3.forward * -horizontal * 50 * Time.deltaTime);//左右旋转
     }
 }
