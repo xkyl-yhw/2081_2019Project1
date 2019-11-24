@@ -101,7 +101,7 @@ public class LightShadow2D : MonoBehaviour
     {
         Vector3 c = Vector3.Cross(a, b);
         float angle = Vector3.Angle(a, b);
-        float sign = (c.z>=0)? 1:-1;
+        float sign = (c.z<0)? 1:-1;
         return angle*sign*Mathf.Deg2Rad;
     }
 
