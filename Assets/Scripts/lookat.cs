@@ -23,9 +23,27 @@ public class lookat : MonoBehaviour
         distance = Vector3.Distance(transform.position, angel.transform.position);
         if (Input.GetKey(KeyCode.L)&&distance<=dis)
         {
+           
+           
+            this.GetComponent<move>().enabled = false;
+            angel.transform.position = transform.position + transform.right *1;
+            float movev = Input.GetAxis("Horizontal");
+            if (movev!=0)
+            {
+                transform.Rotate(new Vector3(0,0,-1*movev));
+            }
+            //target = angel.transform.position - transform.position;
+            //eulerAngles = Quaternion.FromToRotation(Vector3.right, target).eulerAngles;
+            //distance = Vector3.Distance(transform.position, angel.transform.position);
+           // angel.transform.position = transform.position+transform.forward*3;
          
-            transform.rotation = Quaternion.Euler(eulerAngles);
-  
+            //transform.rotation = Quaternion.Euler(eulerAngles);
+           
+
+        }
+        if (!Input.GetKey(KeyCode.L))
+        {
+            this.GetComponent<move>().enabled = true;
         }
     }
 }
