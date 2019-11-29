@@ -23,9 +23,9 @@ public class lookat : MonoBehaviour
         distance = Vector3.Distance(transform.position, angel.transform.position);
         if (Input.GetKey(KeyCode.L)&&distance<=dis)
         {
-           
-           
-            this.GetComponent<move>().enabled = false;
+
+
+            GameObject.Find("playerControl").GetComponent<move>().enabled = false;
             angel.transform.position = transform.position + transform.right *1;
             float movev = Input.GetAxis("Horizontal");
             if (movev!=0)
@@ -43,7 +43,7 @@ public class lookat : MonoBehaviour
         }
         if (!Input.GetKey(KeyCode.L))
         {
-            this.GetComponent<move>().enabled = true;
+            GameObject.Find("playerControl").GetComponent<move>().enabled = true;
         }
     }
 }
