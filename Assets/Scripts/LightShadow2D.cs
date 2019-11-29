@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MeshFilter),typeof(MeshRenderer))]
+[RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 [ExecuteInEditMode]
 public class LightShadow2D : MonoBehaviour
 {
     public float range = 4f;
-    [Range(0,360)]
-    public float angle=360;
+    [Range(0, 360)]
+    public float angle = 360;
     public int segments = 50;
     public LayerMask cullingMask = -1;
-    public Color color=Color.white;
-
+    public Color color = Color.white;
+    public int typeOfLight = 1;
+    public bool getLightSorce = false;
 
     private MeshRenderer meshRenderer;
     private MeshFilter meshFilter;
@@ -21,6 +22,8 @@ public class LightShadow2D : MonoBehaviour
 
     private Vector3[] vertices;
     private int[] triangles;
+    private GameObject lastLight;
+
 
     private void Start()
     {
@@ -33,22 +36,49 @@ public class LightShadow2D : MonoBehaviour
 
     private void Update()
     {
+        if (typeOfLight == 1)
+            RayCheck(Vector2.zero);
+        else if (typeOfLight == 2)
+        {
+            if (getLightSorce)
+            {
+                RayCheck(this.transform.parent.position);
+            }
+            else
+            {
+                meshFilter.mesh = null;
+            }
+        }
+    }
+
+    public void RayCheck(Vector3 offset)
+    {
         bool trigger1 = false;
         bool trigger2 = false;
+        bool trigger3 = false;
         range = Mathf.Clamp(range, 0, range);
         material.SetColor("_Color", color);
         vertices = new Vector3[segments + 1];
-        vertices[0] = transform.InverseTransformPoint(transform.localPosition);
+        vertices[0] = transform.InverseTransformPoint(transform.localPosition+offset);
 
         float tempAngle = angle * Mathf.Deg2Rad;
         float currentAngle = tempAngle / 2;
         float interAngle = tempAngle / segments;
-        for (int i=0;i<segments;i++)
+        for (int i = 0; i < segments; i++)
         {
-            Vector2 dir = new Vector2(Mathf.Cos(currentAngle+countAngle(transform.right,Vector2.right)), Mathf.Sin(currentAngle + countAngle(transform.right, Vector2.right)));
-            RaycastHit2D hit = Physics2D.Raycast(transform.localPosition, dir, range, cullingMask);
+            Vector2 dir = new Vector2(Mathf.Cos(currentAngle + countAngle(transform.right, Vector2.right)), Mathf.Sin(currentAngle + countAngle(transform.right, Vector2.right)));
+            RaycastHit2D hit = Physics2D.Raycast(transform.localPosition+offset, dir, range, cullingMask);
             if (hit.collider != null)
             {
+                if (hit.collider.gameObject.layer==LayerMask.NameToLayer("sunLight"))
+                {
+                    trigger3 = true;
+                    if (hit.collider.gameObject.transform.GetChild(0).GetComponent<LightShadow2D>().typeOfLight == 2 && !hit.collider.gameObject.transform.GetChild(0).GetComponent<LightShadow2D>().getLightSorce)
+                    {
+                        lastLight = hit.collider.gameObject.transform.GetChild(0).gameObject;
+                        hit.collider.gameObject.transform.GetChild(0).GetComponent<LightShadow2D>().getLightSorce = true;  
+                    }
+                }
                 if (hit.collider.gameObject.tag == "Anim")
                 {
                     SendToFear(hit.collider.gameObject);
@@ -61,7 +91,7 @@ public class LightShadow2D : MonoBehaviour
                 }
             }
             float realDis = hit.collider == null ? range : hit.distance;
-            Vector2 endPoint = new Vector2(transform.localPosition.x + realDis * dir.x / dir.magnitude, transform.localPosition.y + realDis * dir.y / dir.magnitude);
+            Vector2 endPoint = new Vector2(transform.localPosition.x+offset.x + realDis * dir.x / dir.magnitude, transform.localPosition.y+offset.y + realDis * dir.y / dir.magnitude);
             endPoint = transform.InverseTransformPoint(endPoint);
             vertices[i + 1] = endPoint;
             currentAngle -= interAngle;
@@ -70,14 +100,27 @@ public class LightShadow2D : MonoBehaviour
             clearFear();
         if (!trigger2)
             clearTrigger();
+        if (!trigger3)
+        {
+            if (lastLight != null)
+            {
+                lastLight.GetComponent<LightShadow2D>().getLightSorce = false;
+            }
+
+        }
+        CreateLightMesh();
+    }
+
+    public void CreateLightMesh()
+    {
         triangles = new int[segments * 3];
-        for (int i = 0,vi=1; i < segments*3-3; i+=3,vi++)
+        for (int i = 0, vi = 1; i < segments * 3 - 3; i += 3, vi++)
         {
             triangles[i] = 0;
             triangles[i + 1] = vi;
             triangles[i + 2] = vi + 1;
         }
-        if (segments != 0&&angle==360)
+        if (segments != 0 && angle == 360)
         {
             triangles[segments * 3 - 3] = 0;
             triangles[segments * 3 - 2] = segments;
@@ -97,12 +140,12 @@ public class LightShadow2D : MonoBehaviour
         meshFilter.sharedMesh = null;
     }
 
-    private float countAngle(Vector3 a,Vector3 b)
+    private float countAngle(Vector3 a, Vector3 b)
     {
         Vector3 c = Vector3.Cross(a, b);
         float angle = Vector3.Angle(a, b);
-        float sign = (c.z<0)? 1:-1;
-        return angle*sign*Mathf.Deg2Rad;
+        float sign = (c.z < 0) ? 1 : -1;
+        return angle * sign * Mathf.Deg2Rad;
     }
 
     public void SendToFear(GameObject target)
@@ -117,7 +160,7 @@ public class LightShadow2D : MonoBehaviour
 
     public void clearFear()
     {
-        foreach(GameObject item in GameObject.FindGameObjectsWithTag("Anim"))
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("Anim"))
         {
             item.GetComponent<SpeciesFearLight>().StopMoving();
         }
@@ -125,7 +168,7 @@ public class LightShadow2D : MonoBehaviour
 
     public void clearTrigger()
     {
-        foreach(GameObject item in GameObject.FindGameObjectsWithTag("LightTrigger"))
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("LightTrigger"))
         {
             item.GetComponent<LightTrigger>().stopMoving();
         }
