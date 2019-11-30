@@ -39,7 +39,7 @@ public class PushAbility : MonoBehaviour
             {
                 return;
             }
-            if (!Physics2D.Raycast(hit.collider.gameObject.transform.position, dir, distance, layerMask1))
+            if (!Physics2D.Raycast(hit.collider.gameObject.transform.position, dir*hit.collider.GetComponent<TurnoverReact>().blockLength, distance, layerMask1))
             {
                 hit.collider.gameObject.GetComponent<TurnoverReact>().setDir(dir);
                 hit.collider.gameObject.GetComponent<TurnoverReact>().turnovered = true;
