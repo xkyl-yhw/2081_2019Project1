@@ -19,6 +19,8 @@ public class move : MonoBehaviour
         Vector3 eulerAngles;
         float moveh = Input.GetAxis("Horizontal");
         float movev = Input.GetAxis("Vertical");
+        Vector2 temp = new Vector2(moveh, movev);
+        temp.Normalize();
         if (moveh != 0 || movev != 0)
         {
             target=new Vector3(moveh,movev,0);
