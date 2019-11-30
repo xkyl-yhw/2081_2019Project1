@@ -28,8 +28,5 @@ public class move : MonoBehaviour
            // Debug.Log(target);
             player.transform.position += target*Time.deltaTime*speed;
         }
-
-
-
     }
 }
