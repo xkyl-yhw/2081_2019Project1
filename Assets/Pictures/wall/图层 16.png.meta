@@ -1,9 +1,7 @@
 fileFormatVersion: 2
-guid: 46f8e8f51ac39a047aec4ac3da11a0ac
+guid: 2c93bb290e108ad4094174d5527b438c
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: "\u4E66\u67B62_0"
-    21300002: "\u4E66\u67B62_1"
+  fileIDToRecycleName: {}
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -33,7 +31,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: -1
     aniso: -1
     mipBias: -100
     wrapU: 1
@@ -47,7 +45,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 2000
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -95,51 +93,11 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: "\u4E66\u67B62_0"
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 1000
-        width: 1042
-        height: 1000
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 267b8d6907829fa4fb6944881eda0f59
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "\u4E66\u67B62_1"
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1042
-        height: 1000
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4d1d4c38cd717134b8a2c19a3aa3c804
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 7aa77963b182b404d874e8d36bb4c192
+    spriteID: 4207d70dec7e3b54c9a877672558d5ab
     vertices: []
     indices: 
     edges: []
