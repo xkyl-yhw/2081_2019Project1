@@ -10,6 +10,7 @@ public class TurnoverReact : MonoBehaviour
     public float border = 1;
     public Color color = Color.white;
     public Vector3 dir;
+    public float blockLength = 1f;
 
     private MeshRenderer meshRenderer;
     private MeshFilter meshFilter;
@@ -106,9 +107,9 @@ public class TurnoverReact : MonoBehaviour
         meshFilter.sharedMesh = null;
     }
 
-    public void setDir(Vector3 newDir )
+    public void setDir(Vector3 newDir)
     {
-        dir = newDir;
+        dir = newDir*blockLength;
         turnovered = true;
     }
 

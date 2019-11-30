@@ -6,7 +6,6 @@ public class PushAbility : MonoBehaviour
 {
     public float distance = 1f;
     public LayerMask layerMask;
-    public float pushLength = 1;
 
     private void Update()
     {
@@ -41,7 +40,7 @@ public class PushAbility : MonoBehaviour
             }
             if (!Physics2D.Raycast(hit.collider.gameObject.transform.position, dir, distance, LayerMask.NameToLayer("Wall")))
             {
-                hit.collider.gameObject.GetComponent<TurnoverReact>().setDir(dir*pushLength);
+                hit.collider.gameObject.GetComponent<TurnoverReact>().setDir(dir);
                 hit.collider.gameObject.GetComponent<TurnoverReact>().turnovered = true;
             }
         }
