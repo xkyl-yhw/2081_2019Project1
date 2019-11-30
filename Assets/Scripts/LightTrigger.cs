@@ -18,17 +18,20 @@ public class LightTrigger : MonoBehaviour
     {
         if (triggered)
         {
-            gear.GetComponent<BoxCollider2D>().enabled = true;
+            gear.GetComponent<Collider2D>().enabled = false;
         }
         else
         {
-            gear.GetComponent<BoxCollider2D>().enabled = false;
+            gear.GetComponent<Collider2D>().enabled = true;
         }
     }
 
     public void ReceiveMessage()
     {
-        triggered = true;
+        foreach (GameObject item in GameObject.FindGameObjectsWithTag("LightTrigger"))
+        {
+            item.GetComponent<LightTrigger>().triggered = true;
+        }
     }
 
     public void stopMoving()
