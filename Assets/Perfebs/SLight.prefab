@@ -90,10 +90,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 321e44429a29e48418924b3b026cf7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 20
+  range: 30
   angle: 30
   segments: 50
   cullingMask:
     serializedVersion: 2
-    m_Bits: 823
+    m_Bits: 4919
   color: {r: 1, g: 1, b: 1, a: 0.6431373}
+  typeOfLight: 1
+  getLightSorce: 0
