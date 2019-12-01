@@ -5,6 +5,7 @@ using UnityEngine;
 public class move : MonoBehaviour
 {
     public float speed=2.0f;
+    public float arc_speed = 2.0f;
     public GameObject player;
     //public float RotationTime;
     // Start is called before the first frame update
@@ -16,19 +17,20 @@ public class move : MonoBehaviour
     void Update()
     {
         Vector3 target;
-        Vector3 eulerAngles;
+
         float moveh = Input.GetAxis("Horizontal");
         float movev = Input.GetAxis("Vertical");
-        Vector2 temp = new Vector2(moveh, movev);
-        temp.Normalize();
+        float arc = 0;
+     
         if (moveh != 0 || movev != 0)
-        {
-            target=new Vector3(moveh,movev,0);
-           //// Debug.Log(target);
-           // eulerAngles = Quaternion.FromToRotation(Vector3.right, target).eulerAngles;
-           // player.transform.rotation = Quaternion.Euler(eulerAngles);
-           // Debug.Log(target);
-            player.transform.position += target*Time.deltaTime*speed;
+        {     
+            arc = Mathf.Atan2(movev, moveh) * Mathf.Rad2Deg;
+            Vector3 target_arc = new Vector3(0, 0, arc);
+            Quaternion newRotation = Quaternion.Euler(target_arc);
+            player.transform.rotation = Quaternion.Lerp(player.transform.rotation, newRotation, Time.deltaTime * arc_speed);
+
+            target = new Vector3(moveh, movev, 0);
+            player.transform.position += target * Time.deltaTime * speed;
         }
     }
 }
