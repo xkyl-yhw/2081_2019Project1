@@ -20,8 +20,8 @@ public class PushAbility : MonoBehaviour
     {
         Vector2 dir = Vector2.zero;
         RaycastHit2D hit;
-        Debug.DrawRay(transform.position, transform.up, Color.red);
-        hit = Physics2D.Raycast(transform.position, transform.up, distance, layerMask);
+        
+        hit = Physics2D.Raycast(transform.position, transform.right, distance, layerMask);
         if (hit.collider != null)
         {
             Vector2 tempV2 = hit.collider.transform.position - transform.position;
