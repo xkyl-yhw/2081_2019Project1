@@ -6,6 +6,8 @@ public class LightTrigger : MonoBehaviour
 {
     public GameObject gear;
     public bool triggered = false;
+    public GameObject[] ReferList;
+    public int type;
 
     private Vector3 prePos;
 
@@ -16,14 +18,37 @@ public class LightTrigger : MonoBehaviour
 
     private void Update()
     {
-        if (triggered)
+        if (type == 1)
         {
-            gear.GetComponent<Collider2D>().enabled = false;
+            if (triggered)
+                gear.GetComponent<Collider2D>().enabled = false;
+            else
+                gear.GetComponent<Collider2D>().enabled = true;
         }
-        else
+        if (type == 2)
         {
-            gear.GetComponent<Collider2D>().enabled = true;
+            if (getTheSum())
+            {
+                gear.GetComponent<Collider2D>().enabled = false;
+            }
+            else
+            {
+                gear.GetComponent<Collider2D>().enabled = true;
+            }
         }
+    }
+
+    public bool getTheSum()
+    {
+        bool temp = false;
+        foreach(GameObject item in ReferList)
+        {
+            if (item.GetComponent<LightTrigger>().triggered)
+            {
+                temp = true;
+            }
+        }
+        return temp;
     }
 
     public void ReceiveMessage()

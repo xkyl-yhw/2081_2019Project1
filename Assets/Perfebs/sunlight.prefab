@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1183833358524974685}
   m_Layer: 11
   m_Name: sunLightPoint
-  m_TagString: Untagged
+  m_TagString: Light
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,7 +99,6 @@ MonoBehaviour:
   color: {r: 1, g: 1, b: 1, a: 0.5254902}
   typeOfLight: 2
   getLightSorce: 0
-  lastLight: {fileID: 0}
 --- !u!1 &1183833359177892801
 GameObject:
   m_ObjectHideFlags: 0

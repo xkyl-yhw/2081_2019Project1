@@ -23,6 +23,7 @@ public class LightShadow2D : MonoBehaviour
     private Vector3[] vertices;
     private int[] triangles;
     private GameObject lastLight;
+    public GameObject lastTrigger;
 
 
     private void Start()
@@ -86,7 +87,7 @@ public class LightShadow2D : MonoBehaviour
                 }
                 if (hit.collider.gameObject.tag == "LightTrigger")
                 {
-                    SendToTrigger(hit.collider.gameObject);
+                    lastTrigger = hit.collider.gameObject;
                     trigger2 = true;
                 }
             }
@@ -99,7 +100,9 @@ public class LightShadow2D : MonoBehaviour
         if (!trigger1)
             clearFear();
         if (!trigger2)
-            clearTrigger();
+        {
+            lastTrigger = null;
+        }
         if (!trigger3)
         {
             if (lastLight != null)
@@ -153,11 +156,6 @@ public class LightShadow2D : MonoBehaviour
         target.GetComponent<SpeciesFearLight>().ReceiveMessage();
     }
 
-    public void SendToTrigger(GameObject target)
-    {
-        target.GetComponent<LightTrigger>().ReceiveMessage();
-    }
-
     public void clearFear()
     {
         foreach (GameObject item in GameObject.FindGameObjectsWithTag("Anim"))
@@ -166,13 +164,6 @@ public class LightShadow2D : MonoBehaviour
         }
     }
 
-    public void clearTrigger()
-    {
-        foreach (GameObject item in GameObject.FindGameObjectsWithTag("LightTrigger"))
-        {
-            item.GetComponent<LightTrigger>().stopMoving();
-        }
-    }
 
 
     #region
