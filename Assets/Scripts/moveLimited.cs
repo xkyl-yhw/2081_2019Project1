@@ -25,13 +25,12 @@ public class moveLimited : MonoBehaviour
     List<GameObject> inventory;
     public bool on_Range = false;
     private int index;
-    List<RangeLimitIns> storeLimit;
-    public float offsetX=0.1f;
+    List<RangeLimitIns> storeLimit = new List<RangeLimitIns>();
+    public float offsetX = 0.1f;
 
     private void Start()
     {
         inventory = new List<GameObject>();
-        storeLimit = new List<RangeLimitIns>();
     }
 
     private void Update()
@@ -42,28 +41,28 @@ public class moveLimited : MonoBehaviour
         {
             preTreatment(i);
         }
-        float[] temp= {0};
-        int temp1=0;
+        float[] temp = { 0 };
+        int temp1 = 0;
         for (int i = 0; i < storeLimit.Count; i++)
         {
-            returnFunctionY(i, transform.position.x,out temp);
-            if(temp.Length==2)
-            if (temp[0] < transform.position.y && transform.position.y < temp[1])
-            {
-                temp1 = i;
-                break;
-            }
+            returnFunctionY(i, transform.position.x, out temp);
+            if (temp.Length == 2)
+                if (temp[0] < transform.position.y && transform.position.y < temp[1])
+                {
+                    temp1 = i;
+                    break;
+                }
         }
         if (on_Range)
         {
-            transform.position = new Vector2(Mathf.Clamp(transform.position.x,storeLimit[temp1].minX+offsetX,storeLimit[temp1].maxX-offsetX),Mathf.Clamp(transform.position.y, temp[0],temp[1]));
+            transform.position = new Vector2(Mathf.Clamp(transform.position.x, storeLimit[temp1].minX + offsetX, storeLimit[temp1].maxX - offsetX), Mathf.Clamp(transform.position.y, temp[0], temp[1]));
         }
     }
 
-    public void returnFunctionY(int index, float x,out float[] tempY )
+    public void returnFunctionY(int index, float x, out float[] tempY)
     {
         List<float> temp = new List<float>();
-       // Debug.Log(storeLimit[index].rightOne.x + " " + storeLimit[index].originOne.x + " " + storeLimit[index].leftOne.x + " " + storeLimit[index].farOne.x);
+        // Debug.Log(storeLimit[index].rightOne.x + " " + storeLimit[index].originOne.x + " " + storeLimit[index].leftOne.x + " " + storeLimit[index].farOne.x);
         //从原点射出的两射线
         if (storeLimit[index].rightOne.x > storeLimit[index].originOne.x)
         {
@@ -72,7 +71,7 @@ public class moveLimited : MonoBehaviour
             if (storeLimit[index].originOne.x < x && storeLimit[index].rightOne.x > x)
             {
 
-                float k = (y1-y2) / (x1-x2);
+                float k = (y1 - y2) / (x1 - x2);
                 float b = y1 - k * x1;
                 temp.Add(x * k + b);
             }
@@ -236,6 +235,7 @@ public class moveLimited : MonoBehaviour
     {
         if (inventory.FindIndex(delegate (GameObject s) { return s == temp; }) != -1)
         {
+            Debug.Log(1);
             RangeLimitIns temp1 = storeLimit.Find((delegate (RangeLimitIns s) { return s.relate == temp; }));
             storeLimit.Remove(temp1);
             inventory.Remove(temp);

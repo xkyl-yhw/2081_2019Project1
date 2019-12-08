@@ -63,7 +63,7 @@ public class LightShadow2D : MonoBehaviour
         range = Mathf.Clamp(range, 0, range);
         material.SetColor("_Color", color);
         vertices = new Vector3[segments + 1];
-        vertices[0] = transform.InverseTransformPoint(transform.localPosition+offset);
+        vertices[0] = transform.InverseTransformPoint(transform.localPosition + offset);
 
         float tempAngle = angle * Mathf.Deg2Rad;
         float currentAngle = tempAngle / 2;
@@ -71,26 +71,26 @@ public class LightShadow2D : MonoBehaviour
         for (int i = 0; i < segments; i++)
         {
             Vector2 dir = new Vector2(Mathf.Cos(currentAngle + countAngle(transform.right, Vector2.right)), Mathf.Sin(currentAngle + countAngle(transform.right, Vector2.right)));
-            RaycastHit2D hit = Physics2D.Raycast(transform.localPosition+offset, dir, range, cullingMask);
+            RaycastHit2D hit = Physics2D.Raycast(transform.localPosition + offset, dir, range, cullingMask);
             if (!trigger4)
             {
                 RaycastHit2D hit1 = Physics2D.Raycast(transform.localPosition + offset, dir, range, playerMask);
-                trigger4 = true;
                 if (hit1.collider != null)
-                if (hit1.collider.gameObject.tag=="player1")
-                {
-                    hit1.collider.GetComponent<moveLimited>().addMessage(this.gameObject);
-                }
+                    if (hit1.collider.gameObject.tag == "player1")
+                    {
+                        trigger4 = true;
+                        hit1.collider.GetComponent<moveLimited>().addMessage(this.gameObject);
+                    }
             }
             if (hit.collider != null)
             {
-                if (hit.collider.gameObject.layer==LayerMask.NameToLayer("sunLight"))
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("sunLight"))
                 {
                     trigger3 = true;
                     if (hit.collider.gameObject.transform.GetChild(0).GetComponent<LightShadow2D>().typeOfLight == 2 && !hit.collider.gameObject.transform.GetChild(0).GetComponent<LightShadow2D>().getLightSorce)
                     {
                         lastLight = hit.collider.gameObject.transform.GetChild(0).gameObject;
-                        hit.collider.gameObject.transform.GetChild(0).GetComponent<LightShadow2D>().getLightSorce = true;  
+                        hit.collider.gameObject.transform.GetChild(0).GetComponent<LightShadow2D>().getLightSorce = true;
                     }
                 }
                 if (hit.collider.gameObject.tag == "Anim")
@@ -105,7 +105,7 @@ public class LightShadow2D : MonoBehaviour
                 }
             }
             float realDis = hit.collider == null ? range : hit.distance;
-            Vector2 endPoint = new Vector2(transform.localPosition.x+offset.x + realDis * dir.x / dir.magnitude, transform.localPosition.y+offset.y + realDis * dir.y / dir.magnitude);
+            Vector2 endPoint = new Vector2(transform.localPosition.x + offset.x + realDis * dir.x / dir.magnitude, transform.localPosition.y + offset.y + realDis * dir.y / dir.magnitude);
             endPoint = transform.InverseTransformPoint(endPoint);
             vertices[i + 1] = endPoint;
             currentAngle -= interAngle;
