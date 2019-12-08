@@ -11,6 +11,7 @@ public class LightShadow2D : MonoBehaviour
     public float angle = 360;
     public int segments = 50;
     public LayerMask cullingMask = -1;
+    public LayerMask playerMask;
     public Color color = Color.white;
     public int typeOfLight = 1;
     public bool getLightSorce = false;
@@ -20,7 +21,8 @@ public class LightShadow2D : MonoBehaviour
     private Mesh mesh;
     private Material material;
 
-    private Vector3[] vertices;
+    [HideInInspector]
+    public Vector3[] vertices;
     private int[] triangles;
     private GameObject lastLight;
     public GameObject lastTrigger;
@@ -57,6 +59,7 @@ public class LightShadow2D : MonoBehaviour
         bool trigger1 = false;
         bool trigger2 = false;
         bool trigger3 = false;
+        bool trigger4 = false;
         range = Mathf.Clamp(range, 0, range);
         material.SetColor("_Color", color);
         vertices = new Vector3[segments + 1];
@@ -69,6 +72,16 @@ public class LightShadow2D : MonoBehaviour
         {
             Vector2 dir = new Vector2(Mathf.Cos(currentAngle + countAngle(transform.right, Vector2.right)), Mathf.Sin(currentAngle + countAngle(transform.right, Vector2.right)));
             RaycastHit2D hit = Physics2D.Raycast(transform.localPosition+offset, dir, range, cullingMask);
+            if (!trigger4)
+            {
+                RaycastHit2D hit1 = Physics2D.Raycast(transform.localPosition + offset, dir, range, playerMask);
+                trigger4 = true;
+                if (hit1.collider != null)
+                if (hit1.collider.gameObject.tag=="player1")
+                {
+                    hit1.collider.GetComponent<moveLimited>().addMessage(this.gameObject);
+                }
+            }
             if (hit.collider != null)
             {
                 if (hit.collider.gameObject.layer==LayerMask.NameToLayer("sunLight"))
@@ -109,7 +122,10 @@ public class LightShadow2D : MonoBehaviour
             {
                 lastLight.GetComponent<LightShadow2D>().getLightSorce = false;
             }
-
+        }
+        if (!trigger4)
+        {
+            GameObject.FindGameObjectWithTag("player1").GetComponent<moveLimited>().minMessage(this.gameObject);
         }
         CreateLightMesh();
     }
