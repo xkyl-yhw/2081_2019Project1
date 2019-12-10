@@ -96,6 +96,11 @@ MonoBehaviour:
   cullingMask:
     serializedVersion: 2
     m_Bits: 4919
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 8192
   color: {r: 1, g: 1, b: 1, a: 0.6431373}
   typeOfLight: 1
   getLightSorce: 0
+  vertices: []
+  lastTrigger: {fileID: 0}

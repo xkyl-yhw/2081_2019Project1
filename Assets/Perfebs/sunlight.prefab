@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1183833358524974687}
   - component: {fileID: 1183833358524974686}
   - component: {fileID: 1183833358524974685}
+  - component: {fileID: 86051802206775183}
   m_Layer: 11
   m_Name: sunLightPoint
   m_TagString: Light
@@ -96,9 +97,28 @@ MonoBehaviour:
   cullingMask:
     serializedVersion: 2
     m_Bits: 823
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 8192
   color: {r: 1, g: 1, b: 1, a: 0.5254902}
   typeOfLight: 2
   getLightSorce: 0
+  vertices: []
+  lastTrigger: {fileID: 0}
+--- !u!114 &86051802206775183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183833358524974684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3962be3bfe4eb24aadbb10452228b9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angel: {fileID: 0}
+  dis: 3
 --- !u!1 &1183833359177892801
 GameObject:
   m_ObjectHideFlags: 0
