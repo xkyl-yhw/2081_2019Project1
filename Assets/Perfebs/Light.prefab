@@ -99,7 +99,7 @@ MonoBehaviour:
     m_Bits: 7991
   playerMask:
     serializedVersion: 2
-    m_Bits: 8192
+    m_Bits: 13111
   color: {r: 1, g: 1, b: 1, a: 0.5254902}
   typeOfLight: 1
   getLightSorce: 0
