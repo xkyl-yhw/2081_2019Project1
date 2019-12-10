@@ -5,7 +5,7 @@ using UnityEngine;
 public class lookat : MonoBehaviour
 {
     public GameObject angel;
-    public float dis=3.0f;
+    public float dis = 3.0f;
     private Vector3 target;
     private Vector3 eulerAngles;
     private float distance;
@@ -21,29 +21,26 @@ public class lookat : MonoBehaviour
         target = angel.transform.position - transform.position;
         eulerAngles = Quaternion.FromToRotation(Vector3.right, target).eulerAngles;
         distance = Vector3.Distance(transform.position, angel.transform.position);
-        if (Input.GetKey(KeyCode.L)&&distance<=dis)
+        if (Input.GetKey(KeyCode.J) && distance <= dis)
         {
-
-
-            GameObject.Find("playerControl").GetComponent<move>().enabled = false;
-            angel.transform.position = transform.position + transform.right *1;
+            angel.transform.parent.GetComponent<move>().enabled = false;
+            angel.GetComponent<moveLimited>().enabled = false;
+            angel.transform.position = transform.position + transform.right * 1;
             float movev = Input.GetAxis("Horizontal");
-            if (movev!=0)
+            if (movev != 0)
             {
-                transform.Rotate(new Vector3(0,0,-1*movev));
+                transform.Rotate(new Vector3(0, 0, -1 * movev));
             }
             //target = angel.transform.position - transform.position;
             //eulerAngles = Quaternion.FromToRotation(Vector3.right, target).eulerAngles;
             //distance = Vector3.Distance(transform.position, angel.transform.position);
-           // angel.transform.position = transform.position+transform.forward*3;
-         
+            // angel.transform.position = transform.position+transform.forward*3;
             //transform.rotation = Quaternion.Euler(eulerAngles);
-           
-
         }
-        if (!Input.GetKey(KeyCode.L))
+        if (Input.GetKeyUp(KeyCode.J))
         {
-            GameObject.Find("playerControl").GetComponent<move>().enabled = true;
+            angel.GetComponent<moveLimited>().enabled = true;
+            angel.transform.parent.GetComponent<move>().enabled = true;
         }
     }
 }
