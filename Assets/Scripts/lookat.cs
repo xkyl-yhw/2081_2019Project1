@@ -21,26 +21,29 @@ public class lookat : MonoBehaviour
         target = angel.transform.position - transform.position;
         eulerAngles = Quaternion.FromToRotation(Vector3.right, target).eulerAngles;
         distance = Vector3.Distance(transform.position, angel.transform.position);
-        if (Input.GetKey(KeyCode.J) && distance <= dis)
+        if (angel.transform.parent.GetComponent<move>().player == angel)
         {
-            angel.transform.parent.GetComponent<move>().enabled = false;
-            angel.GetComponent<moveLimited>().enabled = false;
-            angel.transform.position = transform.position + transform.right * 1;
-            float movev = Input.GetAxis("Horizontal");
-            if (movev != 0)
+            if (Input.GetKey(KeyCode.J) && distance <= dis)
             {
-                transform.Rotate(new Vector3(0, 0, -1 * movev));
+                angel.transform.parent.GetComponent<move>().enabled = false;
+                angel.GetComponent<moveLimited>().enabled = false;
+                angel.transform.position = transform.position + transform.right * 1;
+                float movev = Input.GetAxis("Horizontal");
+                if (movev != 0)
+                {
+                    transform.Rotate(new Vector3(0, 0, -1 * movev));
+                }
+                //target = angel.transform.position - transform.position;
+                //eulerAngles = Quaternion.FromToRotation(Vector3.right, target).eulerAngles;
+                //distance = Vector3.Distance(transform.position, angel.transform.position);
+                // angel.transform.position = transform.position+transform.forward*3;
+                //transform.rotation = Quaternion.Euler(eulerAngles);
             }
-            //target = angel.transform.position - transform.position;
-            //eulerAngles = Quaternion.FromToRotation(Vector3.right, target).eulerAngles;
-            //distance = Vector3.Distance(transform.position, angel.transform.position);
-            // angel.transform.position = transform.position+transform.forward*3;
-            //transform.rotation = Quaternion.Euler(eulerAngles);
-        }
-        if (Input.GetKeyUp(KeyCode.J))
-        {
-            angel.GetComponent<moveLimited>().enabled = true;
-            angel.transform.parent.GetComponent<move>().enabled = true;
+            if (Input.GetKeyUp(KeyCode.J))
+            {
+                angel.GetComponent<moveLimited>().enabled = true;
+                angel.transform.parent.GetComponent<move>().enabled = true;
+            }
         }
     }
 }

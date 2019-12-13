@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class RangeLimitIns
 {
-    public float minX { get; set; }
-    public float maxX { get; set; }
-    public Vector2 maxXPoint { get; set; }
-    public Vector2 minXPoint { get; set; }
-    public Vector2 originOne;
-    public Vector2 farOne;
-    public Vector2 leftOne;
-    public Vector2 rightOne;
+    /*
+   public float minX { get; set; }
+   public float maxX { get; set; }
+   public Vector2 maxXPoint { get; set; }
+   public Vector2 minXPoint { get; set; }
+   public Vector2 originOne;
+   public Vector2 farOne;
+   public Vector2 leftOne;
+   public Vector2 rightOne;
+   */
+    public Vector2[] vertices;
     public RangeLimitIns()
     {
-        originOne = farOne = leftOne = rightOne = Vector2.zero;
+        // originOne = farOne = leftOne = rightOne = Vector2.zero;
         relate = null;
     }
     public GameObject relate;
@@ -33,7 +36,7 @@ public class moveLimited : MonoBehaviour
         inventory = new List<GameObject>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
 
         if (inventory.Count == 0) on_Range = false;
@@ -52,6 +55,7 @@ public class moveLimited : MonoBehaviour
         for (int i = 0; i < storeLimit.Count; i++)
         {
             returnFunctionY(i, transform.position.x, out tempy);
+            //Debug.Log(tempy.Length);
             if (tempy.Length == 2)
                 if (tempy[0] < transform.position.y && transform.position.y < tempy[1])
                 {
@@ -70,6 +74,7 @@ public class moveLimited : MonoBehaviour
         for (int i = 0; i < storeLimit.Count; i++)
         {
             returnFunctionX(i, transform.position.y, out tempx);
+            //Debug.Log(tempx.Length);
             if (tempx.Length == 2)
                 if (tempx[0] < transform.position.x && transform.position.x < tempx[1])
                 {
@@ -87,7 +92,8 @@ public class moveLimited : MonoBehaviour
         }
         if (on_Range)
         {
-            Debug.Log(tempx2[0] + " " + tempx2[1]);
+            //Debug.Log(tempx2[0] + " " + tempx2[1]);
+            //Debug.Log(tempy2[0] + " " + tempy2[1]);
             transform.position = new Vector2(Mathf.Clamp(transform.position.x, tempx2[0] + offsetX, tempx2[1] - offsetX), Mathf.Clamp(transform.position.y, tempy2[0] + offsetX, tempy2[1] - offsetX));
         }
         else
@@ -96,6 +102,126 @@ public class moveLimited : MonoBehaviour
         }
     }
 
+    private void returnFunctionY(int index, float x, out float[] tempY)
+    {
+        float y1, y2, x1, x2;
+        List<float> temp = new List<float>();
+        for (int i = 1; i < storeLimit[index].vertices.Length; i++)
+        {
+            y1 = storeLimit[index].vertices[i].y;
+            y2 = storeLimit[index].vertices[i - 1].y;
+            x1 = storeLimit[index].vertices[i].x;
+            x2 = storeLimit[index].vertices[i - 1].x;
+            if (storeLimit[index].vertices[i].x > storeLimit[index].vertices[i - 1].x)
+            {
+                if (storeLimit[index].vertices[i].x > x && storeLimit[index].vertices[i - 1].x < x)
+                {
+                    float k = (y1 - y2) / (x1 - x2);
+                    float b = y1 - k * x1;
+                    if (temp.FindIndex(delegate (float s) { return s == (k * x + b); }) == -1)
+                        temp.Add(k * x + b);
+                }
+            }
+            else if (storeLimit[index].vertices[i].x < storeLimit[index].vertices[i - 1].x)
+            {
+                if (storeLimit[index].vertices[i].x < x && storeLimit[index].vertices[i - 1].x > x)
+                {
+                    float k = (y1 - y2) / (x1 - x2);
+                    float b = y1 - k * x1;
+                    if (temp.FindIndex(delegate (float s) { return s == (k * x + b); }) == -1)
+                        temp.Add(k * x + b);
+                }
+            }
+        }
+        y1 = storeLimit[index].vertices[0].y;
+        y2 = storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].y;
+        x1 = storeLimit[index].vertices[0].x;
+        x2 = storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].x;
+        if (storeLimit[index].vertices[0].x > storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].x)
+        {
+            if (storeLimit[index].vertices[0].x > x && storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].x < x)
+            {
+                float k = (y1 - y2) / (x1 - x2);
+                float b = y1 - k * x1;
+                if (temp.FindIndex(delegate (float s) { return s == (k * x + b); }) == -1)
+                    temp.Add(k * x + b);
+            }
+        }
+        else if (storeLimit[index].vertices[0].x < storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].x)
+        {
+            if (storeLimit[index].vertices[0].x < x && storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].x > x)
+            {
+                float k = (y1 - y2) / (x1 - x2);
+                float b = y1 - k * x1;
+                if (temp.FindIndex(delegate (float s) { return s == (k * x + b); }) == -1)
+                    temp.Add(k * x + b);
+            }
+        }
+        temp.Sort();
+        tempY = temp.ToArray();
+    }
+
+    private void returnFunctionX(int index, float y, out float[] tempX)
+    {
+        float x1, x2, y1, y2;
+        List<float> temp = new List<float>();
+        for (int i = 1; i < storeLimit[index].vertices.Length; i++)
+        {
+            y1 = storeLimit[index].vertices[i].y;
+            y2 = storeLimit[index].vertices[i - 1].y;
+            x1 = storeLimit[index].vertices[i].x;
+            x2 = storeLimit[index].vertices[i - 1].x;
+            if (storeLimit[index].vertices[i].y > storeLimit[index].vertices[i - 1].y)
+            {
+                if (storeLimit[index].vertices[i].y > y && storeLimit[index].vertices[i - 1].y < y)
+                {
+                    float k = (y1 - y2) / (x1 - x2);
+                    float b = y1 - k * x1;
+                    if (temp.FindIndex(delegate (float s) { return s == ((y - b) / k); }) == -1)
+                        temp.Add((y - b) / k);
+                }
+            }
+            else if (storeLimit[index].vertices[i].y < storeLimit[index].vertices[i - 1].y)
+            {
+                if (storeLimit[index].vertices[i].y < y && storeLimit[index].vertices[i - 1].y > y)
+                {
+                    float k = (y1 - y2) / (x1 - x2);
+                    float b = y1 - k * x1;
+                    if (temp.FindIndex(delegate (float s) { return s == ((y - b) / k); }) == -1)
+                        temp.Add((y - b) / k);
+                }
+            }
+        }
+        y1 = storeLimit[index].vertices[0].y;
+        y2 = storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].y;
+        x1 = storeLimit[index].vertices[0].x;
+        x2 = storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].x;
+        if (storeLimit[index].vertices[0].y > storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].y)
+        {
+            if (storeLimit[index].vertices[0].y > y && storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].y < y)
+            {
+                float k = (y1 - y2) / (x1 - x2);
+                float b = y1 - k * x1;
+                if (temp.FindIndex(delegate (float s) { return s == ((y - b) / k); }) == -1)
+                    temp.Add((y - b) / k);
+            }
+        }
+        else if (storeLimit[index].vertices[0].y < storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].y)
+        {
+            if (storeLimit[index].vertices[0].y < y && storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].y > y)
+            {
+                float k = (y1 - y2) / (x1 - x2);
+                float b = y1 - k * x1;
+                if (temp.FindIndex(delegate (float s) { return s == ((y - b) / k); }) == -1)
+                    temp.Add((y - b) / k);
+            }
+        }
+        temp.Sort();
+        tempX = temp.ToArray();
+    }
+
+    #region
+    /*
     public void returnFunctionX(int index, float y, out float[] tempX)
     {
         List<float> temp = new List<float>();
@@ -293,6 +419,8 @@ public class moveLimited : MonoBehaviour
         temp.Sort();
         tempY = temp.ToArray();
     }
+    */
+    #endregion
 
     private void preTreatment(GameObject templight)
     {
@@ -303,6 +431,15 @@ public class moveLimited : MonoBehaviour
         int indexNum = inventory.FindIndex(delegate (GameObject s) { return s == templight; });
         RangeLimitIns temp = new RangeLimitIns();
         LightShadow2D temp1 = inventory[indexNum].GetComponent<LightShadow2D>();
+        List<Vector2> temp2 = new List<Vector2>();
+        foreach (Vector3 item in temp1.verticesForRange)
+        {
+            temp2.Add(new Vector2(templight.transform.TransformPoint(item).x, templight.transform.TransformPoint(item).y));
+        }
+        temp.vertices = temp2.ToArray();
+        Debug.Log(temp.vertices.Length);
+        #region
+        /*   
         temp.minX = temp.maxX = templight.transform.TransformPoint(temp1.vertices[0]).x;
         temp.maxX = temp.maxX > templight.transform.TransformPoint(temp1.vertices[1]).x ? temp.maxX : templight.transform.TransformPoint(temp1.vertices[1]).x;
         temp.minX = temp.minX < templight.transform.TransformPoint(temp1.vertices[1]).x ? temp.minX : templight.transform.TransformPoint(temp1.vertices[1]).x;
@@ -325,8 +462,6 @@ public class moveLimited : MonoBehaviour
         else if (temp.minX == templight.transform.TransformPoint(temp1.vertices[temp2 - 1]).x)
             temp.minXPoint = templight.transform.TransformPoint(temp1.vertices[temp2 - 1]);
         else temp.minXPoint = templight.transform.TransformPoint(temp1.vertices[(temp2 - 1) / 2]);
-        #region
-        /*        
         temp.minY = temp.maxY = temp1.vertices[0].y;        
         temp.maxY = temp.maxY > temp1.vertices[1].y ? temp.maxY : temp1.vertices[1].y;
         temp.minY = temp.minY < temp1.vertices[1].x ? temp.minY : temp1.vertices[1].y;        
@@ -347,17 +482,19 @@ public class moveLimited : MonoBehaviour
             temp.minYPoint = temp1.vertices[1];
         else if (temp.minY == temp1.vertices[temp2 - 1].y)
             temp.minYPoint = temp1.vertices[temp2 - 1];
-        else temp.minYPoint = temp1.vertices[(temp2 - 1) / 2];*/
+        else temp.minYPoint = temp1.vertices[(temp2 - 1) / 2];
         //temp.minX = inventory[indexNum].transform.TransformPoint(temp.minXPoint).x;
         //temp.maxX = inventory[indexNum].transform.TransformPoint(temp.maxXPoint).x;
         //temp.maxXPoint = inventory[indexNum].transform.TransformPoint(temp.maxXPoint);
         //temp.minXPoint = inventory[indexNum].transform.TransformPoint(temp.minXPoint);
-        #endregion
+        
         temp.originOne = inventory[indexNum].transform.TransformPoint(temp1.vertices[0]);
         temp.farOne = inventory[indexNum].transform.TransformPoint(temp1.vertices[(temp1.vertices.Length - 1) / 2]);
         temp.rightOne = inventory[indexNum].transform.TransformPoint(temp1.vertices[1]);
         temp.leftOne = inventory[indexNum].transform.TransformPoint(temp1.vertices[temp1.vertices.Length - 1]);
         temp.relate = inventory[indexNum];
+        */
+        #endregion
         storeLimit.Add(temp);
     }
 
