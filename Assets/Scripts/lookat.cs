@@ -39,7 +39,7 @@ public class lookat : MonoBehaviour
                 // angel.transform.position = transform.position+transform.forward*3;
                 //transform.rotation = Quaternion.Euler(eulerAngles);
             }
-            if (Input.GetKeyUp(KeyCode.J))
+            if (!Input.GetKey(KeyCode.J))
             {
                 angel.GetComponent<moveLimited>().enabled = true;
                 angel.transform.parent.GetComponent<move>().enabled = true;
