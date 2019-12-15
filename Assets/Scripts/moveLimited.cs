@@ -14,7 +14,7 @@ public class RangeLimitIns
    public Vector2 leftOne;
    public Vector2 rightOne;
    */
-    public Vector2[] vertices;
+    public Vector2[] verticesForRange;
     public RangeLimitIns()
     {
         // originOne = farOne = leftOne = rightOne = Vector2.zero;
@@ -106,15 +106,15 @@ public class moveLimited : MonoBehaviour
     {
         float y1, y2, x1, x2;
         List<float> temp = new List<float>();
-        for (int i = 1; i < storeLimit[index].vertices.Length; i++)
+        for (int i = 1; i < storeLimit[index].verticesForRange.Length; i++)
         {
-            y1 = storeLimit[index].vertices[i].y;
-            y2 = storeLimit[index].vertices[i - 1].y;
-            x1 = storeLimit[index].vertices[i].x;
-            x2 = storeLimit[index].vertices[i - 1].x;
-            if (storeLimit[index].vertices[i].x > storeLimit[index].vertices[i - 1].x)
+            y1 = storeLimit[index].verticesForRange[i].y;
+            y2 = storeLimit[index].verticesForRange[i - 1].y;
+            x1 = storeLimit[index].verticesForRange[i].x;
+            x2 = storeLimit[index].verticesForRange[i - 1].x;
+            if (storeLimit[index].verticesForRange[i].x > storeLimit[index].verticesForRange[i - 1].x)
             {
-                if (storeLimit[index].vertices[i].x > x && storeLimit[index].vertices[i - 1].x < x)
+                if (storeLimit[index].verticesForRange[i].x > x && storeLimit[index].verticesForRange[i - 1].x < x)
                 {
                     float k = (y1 - y2) / (x1 - x2);
                     float b = y1 - k * x1;
@@ -122,9 +122,9 @@ public class moveLimited : MonoBehaviour
                         temp.Add(k * x + b);
                 }
             }
-            else if (storeLimit[index].vertices[i].x < storeLimit[index].vertices[i - 1].x)
+            else if (storeLimit[index].verticesForRange[i].x < storeLimit[index].verticesForRange[i - 1].x)
             {
-                if (storeLimit[index].vertices[i].x < x && storeLimit[index].vertices[i - 1].x > x)
+                if (storeLimit[index].verticesForRange[i].x < x && storeLimit[index].verticesForRange[i - 1].x > x)
                 {
                     float k = (y1 - y2) / (x1 - x2);
                     float b = y1 - k * x1;
@@ -133,13 +133,13 @@ public class moveLimited : MonoBehaviour
                 }
             }
         }
-        y1 = storeLimit[index].vertices[0].y;
-        y2 = storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].y;
-        x1 = storeLimit[index].vertices[0].x;
-        x2 = storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].x;
-        if (storeLimit[index].vertices[0].x > storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].x)
+        y1 = storeLimit[index].verticesForRange[0].y;
+        y2 = storeLimit[index].verticesForRange[storeLimit[index].verticesForRange.Length - 1].y;
+        x1 = storeLimit[index].verticesForRange[0].x;
+        x2 = storeLimit[index].verticesForRange[storeLimit[index].verticesForRange.Length - 1].x;
+        if (storeLimit[index].verticesForRange[0].x > storeLimit[index].verticesForRange[storeLimit[index].verticesForRange.Length - 1].x)
         {
-            if (storeLimit[index].vertices[0].x > x && storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].x < x)
+            if (storeLimit[index].verticesForRange[0].x > x && storeLimit[index].verticesForRange[storeLimit[index].verticesForRange.Length - 1].x < x)
             {
                 float k = (y1 - y2) / (x1 - x2);
                 float b = y1 - k * x1;
@@ -147,9 +147,9 @@ public class moveLimited : MonoBehaviour
                     temp.Add(k * x + b);
             }
         }
-        else if (storeLimit[index].vertices[0].x < storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].x)
+        else if (storeLimit[index].verticesForRange[0].x < storeLimit[index].verticesForRange[storeLimit[index].verticesForRange.Length - 1].x)
         {
-            if (storeLimit[index].vertices[0].x < x && storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].x > x)
+            if (storeLimit[index].verticesForRange[0].x < x && storeLimit[index].verticesForRange[storeLimit[index].verticesForRange.Length - 1].x > x)
             {
                 float k = (y1 - y2) / (x1 - x2);
                 float b = y1 - k * x1;
@@ -165,15 +165,15 @@ public class moveLimited : MonoBehaviour
     {
         float x1, x2, y1, y2;
         List<float> temp = new List<float>();
-        for (int i = 1; i < storeLimit[index].vertices.Length; i++)
+        for (int i = 1; i < storeLimit[index].verticesForRange.Length; i++)
         {
-            y1 = storeLimit[index].vertices[i].y;
-            y2 = storeLimit[index].vertices[i - 1].y;
-            x1 = storeLimit[index].vertices[i].x;
-            x2 = storeLimit[index].vertices[i - 1].x;
-            if (storeLimit[index].vertices[i].y > storeLimit[index].vertices[i - 1].y)
+            y1 = storeLimit[index].verticesForRange[i].y;
+            y2 = storeLimit[index].verticesForRange[i - 1].y;
+            x1 = storeLimit[index].verticesForRange[i].x;
+            x2 = storeLimit[index].verticesForRange[i - 1].x;
+            if (storeLimit[index].verticesForRange[i].y > storeLimit[index].verticesForRange[i - 1].y)
             {
-                if (storeLimit[index].vertices[i].y > y && storeLimit[index].vertices[i - 1].y < y)
+                if (storeLimit[index].verticesForRange[i].y > y && storeLimit[index].verticesForRange[i - 1].y < y)
                 {
                     float k = (y1 - y2) / (x1 - x2);
                     float b = y1 - k * x1;
@@ -181,9 +181,9 @@ public class moveLimited : MonoBehaviour
                         temp.Add((y - b) / k);
                 }
             }
-            else if (storeLimit[index].vertices[i].y < storeLimit[index].vertices[i - 1].y)
+            else if (storeLimit[index].verticesForRange[i].y < storeLimit[index].verticesForRange[i - 1].y)
             {
-                if (storeLimit[index].vertices[i].y < y && storeLimit[index].vertices[i - 1].y > y)
+                if (storeLimit[index].verticesForRange[i].y < y && storeLimit[index].verticesForRange[i - 1].y > y)
                 {
                     float k = (y1 - y2) / (x1 - x2);
                     float b = y1 - k * x1;
@@ -192,13 +192,13 @@ public class moveLimited : MonoBehaviour
                 }
             }
         }
-        y1 = storeLimit[index].vertices[0].y;
-        y2 = storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].y;
-        x1 = storeLimit[index].vertices[0].x;
-        x2 = storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].x;
-        if (storeLimit[index].vertices[0].y > storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].y)
+        y1 = storeLimit[index].verticesForRange[0].y;
+        y2 = storeLimit[index].verticesForRange[storeLimit[index].verticesForRange.Length - 1].y;
+        x1 = storeLimit[index].verticesForRange[0].x;
+        x2 = storeLimit[index].verticesForRange[storeLimit[index].verticesForRange.Length - 1].x;
+        if (storeLimit[index].verticesForRange[0].y > storeLimit[index].verticesForRange[storeLimit[index].verticesForRange.Length - 1].y)
         {
-            if (storeLimit[index].vertices[0].y > y && storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].y < y)
+            if (storeLimit[index].verticesForRange[0].y > y && storeLimit[index].verticesForRange[storeLimit[index].verticesForRange.Length - 1].y < y)
             {
                 float k = (y1 - y2) / (x1 - x2);
                 float b = y1 - k * x1;
@@ -206,9 +206,9 @@ public class moveLimited : MonoBehaviour
                     temp.Add((y - b) / k);
             }
         }
-        else if (storeLimit[index].vertices[0].y < storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].y)
+        else if (storeLimit[index].verticesForRange[0].y < storeLimit[index].verticesForRange[storeLimit[index].verticesForRange.Length - 1].y)
         {
-            if (storeLimit[index].vertices[0].y < y && storeLimit[index].vertices[storeLimit[index].vertices.Length - 1].y > y)
+            if (storeLimit[index].verticesForRange[0].y < y && storeLimit[index].verticesForRange[storeLimit[index].verticesForRange.Length - 1].y > y)
             {
                 float k = (y1 - y2) / (x1 - x2);
                 float b = y1 - k * x1;
@@ -436,62 +436,62 @@ public class moveLimited : MonoBehaviour
         {
             temp2.Add(new Vector2(templight.transform.TransformPoint(item).x, templight.transform.TransformPoint(item).y));
         }
-        temp.vertices = temp2.ToArray();
-        Debug.Log(temp.vertices.Length);
+        temp.verticesForRange = temp2.ToArray();
+        Debug.Log(temp.verticesForRange.Length);
         #region
         /*   
-        temp.minX = temp.maxX = templight.transform.TransformPoint(temp1.vertices[0]).x;
-        temp.maxX = temp.maxX > templight.transform.TransformPoint(temp1.vertices[1]).x ? temp.maxX : templight.transform.TransformPoint(temp1.vertices[1]).x;
-        temp.minX = temp.minX < templight.transform.TransformPoint(temp1.vertices[1]).x ? temp.minX : templight.transform.TransformPoint(temp1.vertices[1]).x;
-        int temp2 = temp1.vertices.Length;
-        temp.maxX = temp.maxX > templight.transform.TransformPoint(temp1.vertices[temp2 - 1]).x ? temp.maxX : templight.transform.TransformPoint(temp1.vertices[temp2 - 1]).x;
-        temp.minX = temp.minX < templight.transform.TransformPoint(temp1.vertices[temp2 - 1]).x ? temp.minX : templight.transform.TransformPoint(temp1.vertices[temp2 - 1]).x;
-        temp.maxX = temp.maxX > templight.transform.TransformPoint(temp1.vertices[(temp2 - 1) / 2]).x ? temp.maxX : templight.transform.TransformPoint(temp1.vertices[(temp2 - 1) / 2]).x;
-        temp.minX = temp.minX < templight.transform.TransformPoint(temp1.vertices[(temp2 - 1) / 2]).x ? temp.minX : templight.transform.TransformPoint(temp1.vertices[(temp2 - 1) / 2]).x;
-        if (temp.maxX == templight.transform.TransformPoint(temp1.vertices[0]).x)
-            temp.maxXPoint = templight.transform.TransformPoint(temp1.vertices[0]);
-        else if (temp.maxX == templight.transform.TransformPoint(temp1.vertices[1]).x)
-            temp.maxXPoint = templight.transform.TransformPoint(temp1.vertices[1]);
-        else if (temp.maxX == templight.transform.TransformPoint(temp1.vertices[temp2 - 1]).x)
-            temp.maxXPoint = templight.transform.TransformPoint(temp1.vertices[temp2 - 1]);
-        else temp.maxXPoint = templight.transform.TransformPoint(temp1.vertices[(temp2 - 1) / 2]);
-        if (temp.minX == templight.transform.TransformPoint(temp1.vertices[0]).x)
-            temp.minXPoint = templight.transform.TransformPoint(temp1.vertices[0]);
-        else if (temp.minX == templight.transform.TransformPoint(temp1.vertices[1]).x)
-            temp.minXPoint = templight.transform.TransformPoint(temp1.vertices[1]);
-        else if (temp.minX == templight.transform.TransformPoint(temp1.vertices[temp2 - 1]).x)
-            temp.minXPoint = templight.transform.TransformPoint(temp1.vertices[temp2 - 1]);
-        else temp.minXPoint = templight.transform.TransformPoint(temp1.vertices[(temp2 - 1) / 2]);
-        temp.minY = temp.maxY = temp1.vertices[0].y;        
-        temp.maxY = temp.maxY > temp1.vertices[1].y ? temp.maxY : temp1.vertices[1].y;
-        temp.minY = temp.minY < temp1.vertices[1].x ? temp.minY : temp1.vertices[1].y;        
-        temp.maxY = temp.maxY > temp1.vertices[temp2 - 1].y ? temp.maxY : temp1.vertices[temp2 - 1].y;
-        temp.minY = temp.minY < temp1.vertices[temp2 - 1].x ? temp.minY : temp1.vertices[temp2 - 1].y;       
-        temp.maxY = temp.maxY > temp1.vertices[(temp2 - 1) / 2].y ? temp.maxY : temp1.vertices[(temp2 - 1) / 2].y;
-        temp.minY = temp.minY < temp1.vertices[(temp2 - 1) / 2].x ? temp.minY : temp1.vertices[(temp2 - 1) / 2].y;
-        if (temp.maxY == temp1.vertices[0].y)
-            temp.maxYPoint = temp1.vertices[0];
-        else if (temp.maxY == temp1.vertices[1].y)
-            temp.maxYPoint = temp1.vertices[1];
-        else if (temp.maxY == temp1.vertices[temp2 - 1].y)
-            temp.maxYPoint = temp1.vertices[temp2 - 1];
-        else temp.maxYPoint = temp1.vertices[(temp2 - 1) / 2];
-        if (temp.minY == temp1.vertices[0].y)
-            temp.minYPoint = temp1.vertices[0];
-        else if (temp.minY == temp1.vertices[1].y)
-            temp.minYPoint = temp1.vertices[1];
-        else if (temp.minY == temp1.vertices[temp2 - 1].y)
-            temp.minYPoint = temp1.vertices[temp2 - 1];
-        else temp.minYPoint = temp1.vertices[(temp2 - 1) / 2];
+        temp.minX = temp.maxX = templight.transform.TransformPoint(temp1.verticesForRangeForRange[0]).x;
+        temp.maxX = temp.maxX > templight.transform.TransformPoint(temp1.verticesForRangeForRange[1]).x ? temp.maxX : templight.transform.TransformPoint(temp1.verticesForRangeForRange[1]).x;
+        temp.minX = temp.minX < templight.transform.TransformPoint(temp1.verticesForRangeForRange[1]).x ? temp.minX : templight.transform.TransformPoint(temp1.verticesForRangeForRange[1]).x;
+        int temp2 = temp1.verticesForRangeForRange.Length;
+        temp.maxX = temp.maxX > templight.transform.TransformPoint(temp1.verticesForRangeForRange[temp2 - 1]).x ? temp.maxX : templight.transform.TransformPoint(temp1.verticesForRangeForRange[temp2 - 1]).x;
+        temp.minX = temp.minX < templight.transform.TransformPoint(temp1.verticesForRangeForRange[temp2 - 1]).x ? temp.minX : templight.transform.TransformPoint(temp1.verticesForRangeForRange[temp2 - 1]).x;
+        temp.maxX = temp.maxX > templight.transform.TransformPoint(temp1.verticesForRangeForRange[(temp2 - 1) / 2]).x ? temp.maxX : templight.transform.TransformPoint(temp1.verticesForRangeForRange[(temp2 - 1) / 2]).x;
+        temp.minX = temp.minX < templight.transform.TransformPoint(temp1.verticesForRangeForRange[(temp2 - 1) / 2]).x ? temp.minX : templight.transform.TransformPoint(temp1.verticesForRangeForRange[(temp2 - 1) / 2]).x;
+        if (temp.maxX == templight.transform.TransformPoint(temp1.verticesForRangeForRange[0]).x)
+            temp.maxXPoint = templight.transform.TransformPoint(temp1.verticesForRangeForRange[0]);
+        else if (temp.maxX == templight.transform.TransformPoint(temp1.verticesForRangeForRange[1]).x)
+            temp.maxXPoint = templight.transform.TransformPoint(temp1.verticesForRangeForRange[1]);
+        else if (temp.maxX == templight.transform.TransformPoint(temp1.verticesForRangeForRange[temp2 - 1]).x)
+            temp.maxXPoint = templight.transform.TransformPoint(temp1.verticesForRangeForRange[temp2 - 1]);
+        else temp.maxXPoint = templight.transform.TransformPoint(temp1.verticesForRangeForRange[(temp2 - 1) / 2]);
+        if (temp.minX == templight.transform.TransformPoint(temp1.verticesForRangeForRange[0]).x)
+            temp.minXPoint = templight.transform.TransformPoint(temp1.verticesForRangeForRange[0]);
+        else if (temp.minX == templight.transform.TransformPoint(temp1.verticesForRangeForRange[1]).x)
+            temp.minXPoint = templight.transform.TransformPoint(temp1.verticesForRangeForRange[1]);
+        else if (temp.minX == templight.transform.TransformPoint(temp1.verticesForRangeForRange[temp2 - 1]).x)
+            temp.minXPoint = templight.transform.TransformPoint(temp1.verticesForRangeForRange[temp2 - 1]);
+        else temp.minXPoint = templight.transform.TransformPoint(temp1.verticesForRangeForRange[(temp2 - 1) / 2]);
+        temp.minY = temp.maxY = temp1.verticesForRangeForRange[0].y;        
+        temp.maxY = temp.maxY > temp1.verticesForRangeForRange[1].y ? temp.maxY : temp1.verticesForRangeForRange[1].y;
+        temp.minY = temp.minY < temp1.verticesForRangeForRange[1].x ? temp.minY : temp1.verticesForRangeForRange[1].y;        
+        temp.maxY = temp.maxY > temp1.verticesForRangeForRange[temp2 - 1].y ? temp.maxY : temp1.verticesForRangeForRange[temp2 - 1].y;
+        temp.minY = temp.minY < temp1.verticesForRangeForRange[temp2 - 1].x ? temp.minY : temp1.verticesForRange[temp2 - 1].y;       
+        temp.maxY = temp.maxY > temp1.verticesForRange[(temp2 - 1) / 2].y ? temp.maxY : temp1.verticesForRange[(temp2 - 1) / 2].y;
+        temp.minY = temp.minY < temp1.verticesForRange[(temp2 - 1) / 2].x ? temp.minY : temp1.verticesForRange[(temp2 - 1) / 2].y;
+        if (temp.maxY == temp1.verticesForRange[0].y)
+            temp.maxYPoint = temp1.verticesForRange[0];
+        else if (temp.maxY == temp1.verticesForRange[1].y)
+            temp.maxYPoint = temp1.verticesForRange[1];
+        else if (temp.maxY == temp1.verticesForRange[temp2 - 1].y)
+            temp.maxYPoint = temp1.verticesForRange[temp2 - 1];
+        else temp.maxYPoint = temp1.verticesForRange[(temp2 - 1) / 2];
+        if (temp.minY == temp1.verticesForRange[0].y)
+            temp.minYPoint = temp1.verticesForRange[0];
+        else if (temp.minY == temp1.verticesForRange[1].y)
+            temp.minYPoint = temp1.verticesForRange[1];
+        else if (temp.minY == temp1.verticesForRange[temp2 - 1].y)
+            temp.minYPoint = temp1.verticesForRange[temp2 - 1];
+        else temp.minYPoint = temp1.verticesForRange[(temp2 - 1) / 2];
         //temp.minX = inventory[indexNum].transform.TransformPoint(temp.minXPoint).x;
         //temp.maxX = inventory[indexNum].transform.TransformPoint(temp.maxXPoint).x;
         //temp.maxXPoint = inventory[indexNum].transform.TransformPoint(temp.maxXPoint);
         //temp.minXPoint = inventory[indexNum].transform.TransformPoint(temp.minXPoint);
         
-        temp.originOne = inventory[indexNum].transform.TransformPoint(temp1.vertices[0]);
-        temp.farOne = inventory[indexNum].transform.TransformPoint(temp1.vertices[(temp1.vertices.Length - 1) / 2]);
-        temp.rightOne = inventory[indexNum].transform.TransformPoint(temp1.vertices[1]);
-        temp.leftOne = inventory[indexNum].transform.TransformPoint(temp1.vertices[temp1.vertices.Length - 1]);
+        temp.originOne = inventory[indexNum].transform.TransformPoint(temp1.verticesForRange[0]);
+        temp.farOne = inventory[indexNum].transform.TransformPoint(temp1.verticesForRange[(temp1.verticesForRange.Length - 1) / 2]);
+        temp.rightOne = inventory[indexNum].transform.TransformPoint(temp1.verticesForRange[1]);
+        temp.leftOne = inventory[indexNum].transform.TransformPoint(temp1.verticesForRange[temp1.verticesForRange.Length - 1]);
         temp.relate = inventory[indexNum];
         */
         #endregion
