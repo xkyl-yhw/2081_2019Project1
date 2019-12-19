@@ -10,7 +10,6 @@ public class LightShadow2D : MonoBehaviour
     [Range(0, 360)]
     public float angle = 360;
     public int segments = 50;
-    public int segmentsForRange = 10;
     public LayerMask cullingMask = -1;
     public LayerMask playerMask;
     public Color color = Color.white;
@@ -22,22 +21,24 @@ public class LightShadow2D : MonoBehaviour
     private Mesh mesh;
     private Material material;
 
-    [HideInInspector]
+   [HideInInspector]
     public Vector3[] vertices;
-    [HideInInspector]
-    public Vector3[] verticesForRange;
     private int[] triangles;
     private GameObject lastLight;
     public GameObject lastTrigger;
 
-
-    private void Start()
+    private void Awake()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
         meshFilter = GetComponent<MeshFilter>();
+        meshFilter.sharedMesh = null;
+        meshRenderer = GetComponent<MeshRenderer>();
         material = new Material(Shader.Find("Sprites/Default"));
         material.SetColor("_Color", color);
         meshRenderer.sharedMaterial = material;
+        if (typeOfLight == 1)
+        {
+            RayCheck(Vector2.zero);
+        }
     }
 
     private void Update()
@@ -45,39 +46,17 @@ public class LightShadow2D : MonoBehaviour
         if (typeOfLight == 1)
         {
             RayCheck(Vector2.zero);
-            RangeLimitCheck(Vector2.zero);
         }
-            
         else if (typeOfLight == 2)
         {
             if (getLightSorce)
             {
                 RayCheck(this.transform.parent.position);
-                RangeLimitCheck(this.transform.parent.position);
             }
             else
             {
                 meshFilter.mesh = null;
             }
-        }
-    }
-
-    public void RangeLimitCheck(Vector3 offset)
-    {
-        verticesForRange = new Vector3[segmentsForRange + 1];
-        verticesForRange[0] = transform.InverseTransformPoint(transform.localPosition + offset);
-        float tempAngle = angle * Mathf.Deg2Rad;
-        float currentAngle = tempAngle / 2;
-        float interAngle = tempAngle / segmentsForRange;
-        for (int i = 0; i < segmentsForRange; i++)
-        {
-            Vector2 dir = new Vector2(Mathf.Cos(currentAngle + countAngle(transform.right, Vector2.right)), Mathf.Sin(currentAngle + countAngle(transform.right, Vector2.right)));
-            RaycastHit2D hit = Physics2D.Raycast(transform.localPosition + offset, dir, range, cullingMask);
-            float realDis = hit.collider == null ? range : hit.distance;
-            Vector2 endPoint = new Vector2(transform.localPosition.x + offset.x + realDis * dir.x / dir.magnitude, transform.localPosition.y + offset.y + realDis * dir.y / dir.magnitude);
-            endPoint = transform.InverseTransformPoint(endPoint);
-            verticesForRange[i + 1] = endPoint;
-            currentAngle -= interAngle;
         }
     }
 
@@ -181,10 +160,7 @@ public class LightShadow2D : MonoBehaviour
         meshFilter.sharedMesh = mesh;
     }
 
-    private void OnDisable()
-    {
-        meshFilter.sharedMesh = null;
-    }
+
 
     private float countAngle(Vector3 a, Vector3 b)
     {

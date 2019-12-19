@@ -354,5 +354,7 @@ MonoBehaviour:
   inventory:
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
   on_Range: 0
   offsetX: 0.1
+  segmentForRange: 15
