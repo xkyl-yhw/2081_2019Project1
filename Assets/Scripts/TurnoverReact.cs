@@ -24,7 +24,7 @@ public class TurnoverReact : MonoBehaviour
     private void Start()
     {
         center = transform.position;
-        meshFilter = GetComponent<MeshFilter>();
+
         meshRenderer = GetComponent<MeshRenderer>();
         material = new Material(Shader.Find("Sprites/Default"));
         material.SetColor("_Color", color);
@@ -102,8 +102,9 @@ public class TurnoverReact : MonoBehaviour
         meshFilter.sharedMesh = mesh;
     }
 
-    private void OnDisable()
+    private void Awake()
     {
+        meshFilter = GetComponent<MeshFilter>();
         meshFilter.sharedMesh = null;
     }
 

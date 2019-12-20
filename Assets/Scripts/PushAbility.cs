@@ -12,7 +12,7 @@ public class PushAbility : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            Raycheck();
+            Raycheck(); 
         }
     }
 

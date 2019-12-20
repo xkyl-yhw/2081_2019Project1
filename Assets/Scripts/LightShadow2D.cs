@@ -66,6 +66,7 @@ public class LightShadow2D : MonoBehaviour
         bool trigger2 = false;
         bool trigger3 = false;
         bool trigger4 = false;
+        bool trigger5 = false;
         range = Mathf.Clamp(range, 0, range);
         material.SetColor("_Color", color);
         vertices = new Vector3[segments + 1];
@@ -82,11 +83,19 @@ public class LightShadow2D : MonoBehaviour
             {
                 RaycastHit2D hit1 = Physics2D.Raycast(transform.localPosition + offset, dir, range, playerMask);
                 if (hit1.collider != null)
+                {
                     if (hit1.collider.gameObject.tag == "player1")
                     {
                         trigger4 = true;
                         hit1.collider.GetComponent<moveLimited>().addMessage(this.gameObject);
                     }
+                    if (hit1.collider.gameObject.tag == "player2")
+                    {
+                        trigger5 = true;
+                        GameObject.Find("GameManager").GetComponent<GameManager>().devilDead();
+                    }
+                }
+
             }
             if (hit.collider != null)
             {
@@ -131,6 +140,7 @@ public class LightShadow2D : MonoBehaviour
         }
         if (!trigger4)
         {
+            if(GameObject.FindGameObjectWithTag("player1")!=null)
             GameObject.FindGameObjectWithTag("player1").GetComponent<moveLimited>().minMessage(this.gameObject);
         }
         CreateLightMesh();

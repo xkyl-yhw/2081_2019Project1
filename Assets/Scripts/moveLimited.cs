@@ -78,7 +78,6 @@ public class moveLimited : MonoBehaviour
             if (tempx.Length == 2)
                 if (tempx[0] < transform.position.x && transform.position.x < tempx[1])
                 {
-                    Debug.Log(1);
                     if (!tempx3)
                     {
                         tempx3 = true;

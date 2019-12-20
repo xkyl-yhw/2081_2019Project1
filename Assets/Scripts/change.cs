@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class change : MonoBehaviour
 {
+    List<GameObject> playerList = new List<GameObject>();
     public GameObject controler;
-    private string nowPlayer;
     // Start is called before the first frame update
     void Start()
     {
-        nowPlayer = "player1";
-        controler = GameObject.FindGameObjectWithTag(nowPlayer);
+        playerList.Add(GameObject.FindGameObjectWithTag("player1"));
+        playerList.Add(GameObject.FindGameObjectWithTag("player2"));
+        controler = playerList[0];
+        playerList.Reverse();
         transform.GetComponent<move>().player = controler;
     }
 
@@ -19,17 +21,17 @@ public class change : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
-            if (nowPlayer == "player1")
-            {
-                nowPlayer = "player2";
-            }
-            else
-            {
-                nowPlayer = "player1";
-            }
-            Debug.Log(nowPlayer);
-            controler = GameObject.FindGameObjectWithTag(nowPlayer);
+            changeController();
             transform.GetComponent<move>().player = controler;
+        }
+    }
+
+    public void changeController()
+    {
+        if (playerList[0].activeSelf == true)
+        {
+            controler = playerList[0];
+            playerList.Reverse();
         }
     }
 }

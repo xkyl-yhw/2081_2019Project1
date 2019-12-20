@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class lookat : MonoBehaviour
 {
+    public float rotateSpeed = 1;
     public GameObject angel;
     public float dis = 3.0f;
     private Vector3 target;
@@ -28,7 +29,7 @@ public class lookat : MonoBehaviour
                 angel.transform.parent.GetComponent<move>().enabled = false;
                 angel.GetComponent<moveLimited>().enabled = false;
                 angel.transform.position = transform.position + transform.right * 1;
-                float movev = Input.GetAxis("Horizontal");
+                float movev = Input.GetAxis("Horizontal")*rotateSpeed;
                 if (movev != 0)
                 {
                     transform.Rotate(new Vector3(0, 0, -1 * movev));
