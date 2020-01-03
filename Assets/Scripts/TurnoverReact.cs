@@ -19,12 +19,12 @@ public class TurnoverReact : MonoBehaviour
 
     private Vector3[] vertices;
     private int[] triangles;
+    private Vector2[] uvs;
     private PolygonCollider2D collider;
 
     private void Start()
     {
         center = transform.position;
-
         meshRenderer = GetComponent<MeshRenderer>();
         material = new Material(Shader.Find("Sprites/Default"));
         material.SetColor("_Color", color);
@@ -110,7 +110,7 @@ public class TurnoverReact : MonoBehaviour
 
     public void setDir(Vector3 newDir)
     {
-        dir = newDir*blockLength;
+        dir = newDir * blockLength;
         turnovered = true;
     }
 

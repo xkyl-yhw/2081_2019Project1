@@ -21,7 +21,7 @@ public class LightShadow2D : MonoBehaviour
     private Mesh mesh;
     private Material material;
 
-   [HideInInspector]
+    [HideInInspector]
     public Vector3[] vertices;
     private int[] triangles;
     private GameObject lastLight;
@@ -86,8 +86,18 @@ public class LightShadow2D : MonoBehaviour
                 {
                     if (hit1.collider.gameObject.tag == "player1")
                     {
+                        RaycastHit2D[] hit2 = Physics2D.RaycastAll(transform.localPosition + offset, dir, range, playerMask);
+                        foreach (var item in hit2)
+                        {
+                            if (item.collider.gameObject.tag == "player2")
+                            {
+                                trigger5 = true;
+                                GameObject.Find("GameManager").GetComponent<GameManager>().devilDead();
+                            }
+                        }
                         trigger4 = true;
                         hit1.collider.GetComponent<moveLimited>().addMessage(this.gameObject);
+
                     }
                     if (hit1.collider.gameObject.tag == "player2")
                     {
@@ -95,7 +105,6 @@ public class LightShadow2D : MonoBehaviour
                         GameObject.Find("GameManager").GetComponent<GameManager>().devilDead();
                     }
                 }
-
             }
             if (hit.collider != null)
             {
@@ -140,8 +149,8 @@ public class LightShadow2D : MonoBehaviour
         }
         if (!trigger4)
         {
-            if(GameObject.FindGameObjectWithTag("player1")!=null)
-            GameObject.FindGameObjectWithTag("player1").GetComponent<moveLimited>().minMessage(this.gameObject);
+            if (GameObject.FindGameObjectWithTag("player1") != null)
+                GameObject.FindGameObjectWithTag("player1").GetComponent<moveLimited>().minMessage(this.gameObject);
         }
         CreateLightMesh();
     }
@@ -192,8 +201,6 @@ public class LightShadow2D : MonoBehaviour
             item.GetComponent<SpeciesFearLight>().StopMoving();
         }
     }
-
-
 
     #region
     /*

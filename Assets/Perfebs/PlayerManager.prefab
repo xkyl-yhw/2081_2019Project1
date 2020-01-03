@@ -351,10 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a670a0f370015914eb1a12133183dfcf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  inventory: []
   on_Range: 0
-  offsetX: 0.1
+  offsetX: 0.2
   segmentForRange: 15

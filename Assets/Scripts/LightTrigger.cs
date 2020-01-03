@@ -63,6 +63,4 @@ public class LightTrigger : MonoBehaviour
     {
         triggered = false;
     }
-
-
 }
