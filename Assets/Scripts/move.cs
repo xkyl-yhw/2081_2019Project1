@@ -7,6 +7,8 @@ public class move : MonoBehaviour
     public float speed = 2.0f;
     public float arc_speed = 2.0f;
     public GameObject player;
+    public float moveh;
+    public float movev;
     //public float RotationTime;
     // Start is called before the first frame update
     void Start()
@@ -18,10 +20,9 @@ public class move : MonoBehaviour
     {
         Vector3 target;
 
-        float moveh = Input.GetAxis("Horizontal");
-        float movev = Input.GetAxis("Vertical");
+        //float moveh = Input.GetAxis("Horizontal");
+        //float movev = Input.GetAxis("Vertical");
         float arc = 0;
-
         if (moveh != 0 || movev != 0)
         {
             arc = Mathf.Atan2(movev, moveh) * Mathf.Rad2Deg;
