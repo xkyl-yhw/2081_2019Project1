@@ -39,12 +39,16 @@ public class PushAbility : MonoBehaviour
             {
                 return;
             }
-            RaycastHit2D temp2 = Physics2D.Raycast(hit.collider.gameObject.transform.position, dir , distance * hit.collider.GetComponent<TurnoverReact>().blockLength, layerMask1);
-            if (temp2.collider==null)
+            if (dir == hit.collider.GetComponent<TurnoverReact>().dir)
             {
-                hit.collider.gameObject.GetComponent<TurnoverReact>().setDir(dir);
-                hit.collider.gameObject.GetComponent<TurnoverReact>().turnovered = true;
+                hit.collider.GetComponent<TurnoverReact>().React();
             }
+          //  RaycastHit2D temp2 = Physics2D.Raycast(hit.collider.gameObject.transform.position, dir , distance * hit.collider.GetComponent<TurnoverReact>().blockLength, layerMask1);
+           /* if (temp2.collider==null)
+            {
+              //  hit.collider.gameObject.GetComponent<TurnoverReact>().setDir(dir);
+              //  hit.collider.gameObject.GetComponent<TurnoverReact>().turnovered = true;
+            }*/
         }
     }
 }

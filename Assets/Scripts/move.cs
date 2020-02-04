@@ -20,8 +20,8 @@ public class move : MonoBehaviour
     {
         Vector3 target;
 
-        //float moveh = Input.GetAxis("Horizontal");
-        //float movev = Input.GetAxis("Vertical");
+        float moveh = Input.GetAxis("Horizontal");
+        float movev = Input.GetAxis("Vertical");
         float arc = 0;
         if (moveh != 0 || movev != 0)
         {
